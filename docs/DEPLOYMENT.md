@@ -272,7 +272,7 @@ Vercel supports Dockerfile-based container deployments via its Container Runtime
 Unlike Hugging Face Spaces, which routes to a fixed target port (`7860`), Vercel assigns a dynamic port through the standard `PORT` environment variable at container startup.
 `Dockerfile.vercel` handles this dynamically via:
 ```dockerfile
-CMD ["sh", "-c", "streamlit run app.py --server.port=${PORT:-80} --server.address=0.0.0.0 --server.headless=true --server.enableCORS=true --server.enableXsrfProtection=true --server.maxUploadSize=4"]
+CMD ["sh", "-c", "python -m streamlit run app.py --server.port=${PORT:-80} --server.address=0.0.0.0 --server.headless=true --server.enableCORS=true --server.enableXsrfProtection=true --server.maxUploadSize=4"]
 ```
 If `$PORT` is set by Vercel, Streamlit binds to that port; if omitted (e.g. in local Docker testing), it defaults cleanly to standard HTTP port `80`.
 

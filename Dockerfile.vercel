@@ -22,36 +22,56 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Set up non-root container user (UID 1000) for secure container runtime execution
+# Copy dependency definition to temporary staging directory for system installation
+WORKDIR /tmp/build
+COPY requirements.txt /tmp/build/
+
+# Step 1: Install CPU-only PyTorch into the global system Python environment as root
+RUN python -m pip install --no-cache-dir --upgrade pip && \
+    python -m pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+
+# Step 2: Install remaining production requirements into the global environment using the same interpreter
+RUN python -m pip install --no-cache-dir -r /tmp/build/requirements.txt
+
+# Step 3: Mandatory build-time validation as root: PyTorch is CPU-only, Streamlit is 1.67.0, and pip check passes
+RUN python -c "import sys, streamlit, torch; \
+    print('Root Python:', sys.executable); \
+    print('Root Streamlit:', streamlit.__version__); \
+    print('Root Streamlit location:', streamlit.__file__); \
+    print('Root PyTorch:', torch.__version__); \
+    print('Root CUDA:', torch.version.cuda); \
+    assert streamlit.__version__ == '1.67.0', f'Expected Streamlit 1.67.0, got {streamlit.__version__}'; \
+    assert torch.version.cuda is None, f'Expected CPU build, got CUDA {torch.version.cuda}'" && \
+    python -m pip check && \
+    python -m streamlit --version
+
+# Step 4: Create non-root user (UID 1000) and prepare user-owned model cache and application directories
 RUN useradd -m -u 1000 user && \
     mkdir -p /home/user/.cache/huggingface && \
     mkdir -p /home/user/.cache/torch && \
-    chown -R user:user /home/user
+    mkdir -p /home/user/app && \
+    chown -R user:user /home/user && \
+    rm -rf /tmp/build
 
 ENV HOME=/home/user \
-    PATH=/home/user/.local/bin:$PATH \
     HF_HOME=/home/user/.cache/huggingface \
     TRANSFORMERS_CACHE=/home/user/.cache/huggingface/hub \
     TORCH_HOME=/home/user/.cache/torch
 
-WORKDIR $HOME/app
-
-# Switch to non-root user so all dependencies and model caches are user-owned
+# Switch to non-root user for application runtime
 USER user
+WORKDIR /home/user/app
 
-# Copy dependency definition
-COPY --chown=user:user requirements.txt $HOME/app/
-
-# Step 1: Install CPU-only PyTorch directly from official PyTorch CPU index
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
-
-# Step 2: Install remaining production requirements from PyPI without relying on index priority
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Step 3: Validate PyTorch installation: verify CPU-only build (CUDA is None) and run pip check
-RUN python -c "import torch; print(f'Verified PyTorch: {torch.__version__}'); assert torch.version.cuda is None, f'Expected CPU build, found CUDA: {torch.version.cuda}'" && \
-    pip check
+# Step 5: Mandatory validation as non-root user: confirm Streamlit and PyTorch import cleanly
+RUN python -c "import sys, streamlit, torch; \
+    print('User Python:', sys.executable); \
+    print('User Streamlit:', streamlit.__version__); \
+    print('User Streamlit location:', streamlit.__file__); \
+    print('User PyTorch:', torch.__version__); \
+    print('User CUDA:', torch.version.cuda); \
+    assert streamlit.__version__ == '1.67.0', f'Expected Streamlit 1.67.0, got {streamlit.__version__}'; \
+    assert torch.version.cuda is None, f'Expected CPU build, got CUDA {torch.version.cuda}'" && \
+    python -m streamlit --version
 
 # Pre-download both models directly into user-owned HF_HOME during build
 # Eliminates cold-start latency and avoids outbound runtime Hugging Face Hub calls
@@ -60,12 +80,11 @@ RUN python -c "from sentence_transformers import CrossEncoder, SentenceTransform
     SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')"
 
 # Copy application source code, configuration, demo fixtures, and research artifacts
-COPY --chown=user:user . $HOME/app
+COPY --chown=user:user . /home/user/app
 
 # Expose default HTTP container port
 EXPOSE 80
 
 # Launch production Streamlit application dynamically binding to ${PORT:-80}
-# Vercel Container Runtime provides the PORT environment variable at runtime
-CMD ["sh", "-c", "streamlit run app.py --server.port=${PORT:-80} --server.address=0.0.0.0 --server.headless=true --server.enableCORS=true --server.enableXsrfProtection=true --server.maxUploadSize=4"]
-
+# Invokes via python -m streamlit to guarantee execution through the verified Python interpreter
+CMD ["sh", "-c", "python -m streamlit run app.py --server.port=${PORT:-80} --server.address=0.0.0.0 --server.headless=true --server.enableCORS=true --server.enableXsrfProtection=true --server.maxUploadSize=4"]
