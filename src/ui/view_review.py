@@ -30,10 +30,12 @@ def render_document_review(get_verifier_fn) -> None:
     # 1. Document Upload & Configuration
     with st.container(border=True):
         st.markdown("**1. Document Ingestion & Query**")
+        max_upload_mb = SETTINGS.max_upload_size_bytes / (1024 * 1024)
+        max_upload_mb_str = f"{max_upload_mb:.0f}" if max_upload_mb.is_integer() else f"{max_upload_mb:.1f}"
         uploaded = st.file_uploader(
             "Select a document (PDF, TXT, DOCX)",
             type=["pdf", "txt", "docx"],
-            help="Text-based documents up to 25 MB. Scanned image PDFs without text layers will be reported clearly.",
+            help=f"Text-based documents up to {max_upload_mb_str} MB. Scanned image PDFs without text layers will be reported clearly.",
         )
 
         oversized = False
@@ -47,7 +49,7 @@ def render_document_review(get_verifier_fn) -> None:
             size_mb = uploaded.size / (1024 * 1024)
             if uploaded.size > SETTINGS.max_upload_size_bytes:
                 oversized = True
-                st.error(f"Uploaded file ({size_mb:.1f} MB) exceeds maximum allowed limit of {SETTINGS.max_upload_size_bytes / (1024*1024):.0f} MB.")
+                st.error(f"Uploaded file ({size_mb:.1f} MB) exceeds maximum allowed limit of {max_upload_mb_str} MB.")
             else:
                 st.caption(f"Loaded: `{uploaded.name}` ({size_mb:.2f} MB)")
 

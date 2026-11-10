@@ -1,0 +1,65 @@
+# Production Dockerfile for Evidence Review (Vercel Container Runtime)
+FROM python:3.12-slim
+
+# Prevent Python from writing .pyc files and configure runtime environment
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    DEBIAN_FRONTEND=noninteractive \
+    VERCEL=1 \
+    DEPLOYMENT_TARGET=vercel \
+    MAX_UPLOAD_SIZE_MB=4 \
+    STREAMLIT_SERVER_ADDRESS=0.0.0.0 \
+    STREAMLIT_SERVER_HEADLESS=true \
+    STREAMLIT_SERVER_ENABLE_CORS=true \
+    STREAMLIT_SERVER_ENABLE_XSRF_PROTECTION=true \
+    STREAMLIT_SERVER_MAX_UPLOAD_SIZE=4 \
+    HF_HUB_ENABLE_HF_TRANSFER=0
+
+# Install minimal OS runtime packages required for document parsing and certificates
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up non-root container user (UID 1000) for secure container runtime execution
+RUN useradd -m -u 1000 user && \
+    mkdir -p /home/user/.cache/huggingface && \
+    mkdir -p /home/user/.cache/torch && \
+    chown -R user:user /home/user
+
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH \
+    HF_HOME=/home/user/.cache/huggingface \
+    TRANSFORMERS_CACHE=/home/user/.cache/huggingface/hub \
+    TORCH_HOME=/home/user/.cache/torch
+
+WORKDIR $HOME/app
+
+# Switch to non-root user so all dependencies and model caches are user-owned
+USER user
+
+# Copy dependency definition
+COPY --chown=user:user requirements.txt $HOME/app/
+
+# Install PyTorch CPU and pinned production dependencies in user space
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Pre-download both models directly into user-owned HF_HOME during build
+# Eliminates cold-start latency and avoids outbound runtime Hugging Face Hub calls
+RUN python -c "from sentence_transformers import CrossEncoder, SentenceTransformer; \
+    CrossEncoder('cross-encoder/nli-deberta-v3-base'); \
+    SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')"
+
+# Copy application source code, configuration, demo fixtures, and research artifacts
+COPY --chown=user:user . $HOME/app
+
+# Expose default HTTP container port
+EXPOSE 80
+
+# Launch production Streamlit application dynamically binding to ${PORT:-80}
+# Vercel Container Runtime provides the PORT environment variable at runtime
+CMD ["sh", "-c", "streamlit run app.py --server.port=${PORT:-80} --server.address=0.0.0.0 --server.headless=true --server.enableCORS=true --server.enableXsrfProtection=true --server.maxUploadSize=4"]
+

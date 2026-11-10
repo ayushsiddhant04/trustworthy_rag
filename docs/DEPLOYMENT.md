@@ -250,4 +250,67 @@ Verify all key functions in the deployed Space:
 - **Standard Configuration**: `.streamlit/config.toml` configures `enableCORS = true` and `enableXsrfProtection = true` for local development and containerized deployments.
 - **Cross-Origin Iframe Embedding**: If deploying inside an embedded cross-origin iframe where the hosting platform proxies WebSocket traffic from a distinct origin, configure allowed origins explicitly via `server.corsAllowedOrigins = ["https://huggingface.co"]` rather than disabling CORS globally. Never disable XSRF protection (`enableXsrfProtection = true`), which safeguards file upload endpoints against cross-site request forgery.
 
+---
+
+## 7. Vercel Container Deployment (Phase 9)
+
+### Architecture & Runtime Model
+Vercel supports Dockerfile-based container deployments via its Container Runtime. Evidence Review deploys to Vercel as a containerized Streamlit service without altering the application architecture or rewriting UI logic into a separate web framework.
+
+### Key Deployment Characteristics
+
+| Dimension | Hugging Face Spaces (`Dockerfile`) | Vercel Container Runtime (`Dockerfile.vercel`) | Local Development |
+| :--- | :--- | :--- | :--- |
+| **Port Binding** | Fixed port `7860` | Dynamic port `${PORT:-80}` via runtime env | Port `7860` or user-defined |
+| **Upload Limit** | 25 MB | **4 MB** (enforces Vercel's 4.5 MB request payload ceiling) | 25 MB |
+| **Container User** | Non-root `user` (UID 1000) | Non-root `user` (UID 1000) | Current OS user |
+| **Model Caching** | Pre-baked in image build | Pre-baked in image build | Local cache directory |
+| **Network Mode** | 100% Offline verification | 100% Offline verification | Offline / Optional LLM |
+| **Storage Model** | Ephemeral | Ephemeral | Local filesystem |
+
+### 1. Dynamic Port Binding (`$PORT`)
+Unlike Hugging Face Spaces, which routes to a fixed target port (`7860`), Vercel assigns a dynamic port through the standard `PORT` environment variable at container startup.
+`Dockerfile.vercel` handles this dynamically via:
+```dockerfile
+CMD ["sh", "-c", "streamlit run app.py --server.port=${PORT:-80} --server.address=0.0.0.0 --server.headless=true --server.enableCORS=true --server.enableXsrfProtection=true --server.maxUploadSize=4"]
+```
+If `$PORT` is set by Vercel, Streamlit binds to that port; if omitted (e.g. in local Docker testing), it defaults cleanly to standard HTTP port `80`.
+
+### 2. Strict 4 MB Upload Limit (Payload Ceiling Compatibility)
+Vercel edge gateways enforce a strict **4.5 MB maximum request body size**. Any multipart file upload exceeding this limit is terminated at the edge with HTTP status 413 (*Payload Too Large*), bypassing application-level handlers.
+
+To guarantee seamless user experience and prevent silent dropped uploads:
+- `src/config.py` detects Vercel environments automatically (`VERCEL=1` or `DEPLOYMENT_TARGET=vercel`) and clamps `max_upload_size_bytes` to **4 MB** ($4 \times 1024 \times 1024$ bytes).
+- `Dockerfile.vercel` passes `--server.maxUploadSize=4` and `STREAMLIT_SERVER_MAX_UPLOAD_SIZE=4`.
+- The UI in `src/ui/view_review.py` dynamically adjusts upload hints and validation messages.
+- Local development preserves the full **25 MB** threshold.
+
+### 3. Pre-Cached Offline Model Strategy
+Both transformer models:
+- Verification Cross-Encoder: `cross-encoder/nli-deberta-v3-base` (~500 MB)
+- Dense Embedding: `sentence-transformers/all-MiniLM-L6-v2` (~90 MB)
+
+are downloaded and pre-cached inside `/home/user/.cache/huggingface` during the Docker image build stage.
+This guarantees:
+1. Instant cold starts without outbound model fetching.
+2. Resilience against external repository downtime or Hugging Face rate limits.
+3. Completely offline, zero-network runtime verification.
+
+### 4. WebSocket & Streamlit Protocol Handling
+Streamlit communicates between the browser client and backend via a bidirectional WebSocket connection (`/_stcore/stream`).
+- `Dockerfile.vercel` configures `--server.enableCORS=true` and `--server.enableXsrfProtection=true`.
+- Vercel Container Runtime routes HTTP and WebSocket connections through its reverse proxy. Note that long-lived WebSocket connections are subject to platform connection lifecycle and scale-to-zero timeouts. Because Evidence Review processes files in-memory per session without stateful database locks, fresh sessions connect immediately upon page reload.
+
+### 5. Zero-Database Ephemeral Lifecycle
+Vercel container instances are stateless and ephemeral. Evidence Review requires no PostgreSQL, Redis, or local disk volume; document text, chunk embeddings, and NLI verification scores reside in memory within `st.session_state`. This eliminates database configuration overhead and matches Vercel's operational model.
+
+### 6. Deployment Procedure
+To deploy using the Vercel CLI:
+```bash
+# Link project and deploy container
+vercel --prod
+```
+Ensure your Vercel project configuration points to `Dockerfile.vercel` as its container build target.
+
+
 

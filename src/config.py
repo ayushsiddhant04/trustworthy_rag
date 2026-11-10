@@ -33,6 +33,30 @@ def _int(name: str, default: int) -> int:
         return default
 
 
+def _resolve_upload_limit_bytes() -> int:
+    """Resolve maximum upload size in bytes.
+    
+    Priority:
+    1. MAX_UPLOAD_SIZE_BYTES (explicit byte override)
+    2. MAX_UPLOAD_SIZE_MB (explicit MB override)
+    3. Target is Vercel (VERCEL=1 or DEPLOYMENT_TARGET=vercel): 4 MB (enforces Vercel's 4.5 MB gateway ceiling)
+    4. Default: 25 MB for local workstations and general container deployments
+    """
+    if os.getenv("MAX_UPLOAD_SIZE_BYTES"):
+        try:
+            return int(os.getenv("MAX_UPLOAD_SIZE_BYTES"))
+        except (TypeError, ValueError):
+            pass
+    if os.getenv("MAX_UPLOAD_SIZE_MB"):
+        try:
+            return int(float(os.getenv("MAX_UPLOAD_SIZE_MB")) * 1024 * 1024)
+        except (TypeError, ValueError):
+            pass
+    if os.getenv("VERCEL") or os.getenv("DEPLOYMENT_TARGET", "").lower() == "vercel":
+        return 4 * 1024 * 1024
+    return 25 * 1024 * 1024
+
+
 @dataclass(frozen=True)
 class Settings:
     chunk_size_words: int = _int("CHUNK_SIZE_WORDS", 120)
@@ -55,7 +79,7 @@ class Settings:
     relevance_threshold: float = _float("RELEVANCE_THRESHOLD", 0.30)
     relevance_model: str = os.getenv("RELEVANCE_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
     # File safeguards (Task 5)
-    max_upload_size_bytes: int = _int("MAX_UPLOAD_SIZE_BYTES", 25 * 1024 * 1024)
+    max_upload_size_bytes: int = _resolve_upload_limit_bytes()
     max_pdf_pages: int = _int("MAX_PDF_PAGES", 100)
     supported_file_extensions: tuple[str, ...] = (".pdf", ".txt", ".docx")
 

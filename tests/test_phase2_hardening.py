@@ -277,3 +277,32 @@ def test_pdf_page_limits_are_enforced(monkeypatch):
 
     with pytest.raises(DocumentIngestionError, match="exceeds the maximum allowed limit"):
         load_document(NamedBytesIO(data, "large.pdf"))
+
+
+# 12. Dynamic upload limit resolution for Vercel and local
+def test_resolve_upload_limit_bytes(monkeypatch):
+    from src.config import _resolve_upload_limit_bytes
+
+    # Default should be 25 MB
+    monkeypatch.delenv("MAX_UPLOAD_SIZE_BYTES", raising=False)
+    monkeypatch.delenv("MAX_UPLOAD_SIZE_MB", raising=False)
+    monkeypatch.delenv("VERCEL", raising=False)
+    monkeypatch.delenv("DEPLOYMENT_TARGET", raising=False)
+    assert _resolve_upload_limit_bytes() == 25 * 1024 * 1024
+
+    # Vercel flag should resolve to 4 MB (Vercel 4.5 MB request ceiling)
+    monkeypatch.setenv("VERCEL", "1")
+    assert _resolve_upload_limit_bytes() == 4 * 1024 * 1024
+
+    monkeypatch.delenv("VERCEL", raising=False)
+    monkeypatch.setenv("DEPLOYMENT_TARGET", "vercel")
+    assert _resolve_upload_limit_bytes() == 4 * 1024 * 1024
+
+    # Explicit MB override takes precedence
+    monkeypatch.setenv("MAX_UPLOAD_SIZE_MB", "10")
+    assert _resolve_upload_limit_bytes() == 10 * 1024 * 1024
+
+    # Explicit Byte override takes highest precedence
+    monkeypatch.setenv("MAX_UPLOAD_SIZE_BYTES", "2048")
+    assert _resolve_upload_limit_bytes() == 2048
+
