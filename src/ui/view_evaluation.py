@@ -6,7 +6,7 @@ import tempfile
 import pandas as pd
 import streamlit as st
 
-from .components import render_page_header, render_empty_state
+from .components import render_page_header, render_empty_state, render_safe_table
 
 
 def render_research_evaluation(get_verifier_fn) -> None:
@@ -98,13 +98,13 @@ def render_research_evaluation(get_verifier_fn) -> None:
             st.caption("ℹ️ Preliminary test dataset: designed for controlled architecture & class validation across all four labels under identical inputs, not for broad cross-domain generalization claims.")
         prev_col, dist_col = st.columns([2, 1], gap="medium")
         with prev_col:
-            st.dataframe(df_eval.head(5), use_container_width=True, hide_index=True)
+            render_safe_table(df_eval.head(5), use_container_width=True, hide_index=True)
         with dist_col:
             lbl_col = [c for c in df_eval.columns if c.lower() in ("true_label", "label", "ground_truth")]
             if lbl_col:
                 counts = df_eval[lbl_col[0]].astype(str).str.lower().value_counts()
                 dist_df = pd.DataFrame({"Class": counts.index, "Samples": counts.values})
-                st.dataframe(dist_df, use_container_width=True, hide_index=True)
+                render_safe_table(dist_df, use_container_width=True, hide_index=True)
 
         exec_col1, exec_col2 = st.columns(2)
         with exec_col1:
@@ -195,20 +195,20 @@ def render_research_evaluation(get_verifier_fn) -> None:
                 st.markdown("**4-Class Confusion Matrix** (Rows: Ground Truth, Columns: Predicted)")
                 labels = summary["labels"]
                 cm_df = pd.DataFrame(summary["confusion_matrix"], index=labels, columns=labels)
-                st.dataframe(cm_df, use_container_width=True)
+                render_safe_table(cm_df, use_container_width=True, hide_index=False)
             with pc_col:
                 st.markdown("**Per-Class Precision, Recall & F1**")
                 per_class = summary.get("per_class", {})
                 if per_class:
                     pc_df = pd.DataFrame(per_class).transpose()
-                    st.dataframe(pc_df.style.format("{:.3f}", subset=["precision", "recall", "f1"]), use_container_width=True)
+                    render_safe_table(pc_df, use_container_width=True, hide_index=False)
         else:
             st.info("Run a benchmark evaluation to generate the confusion matrix.")
 
     with tab2:
         st.markdown("**Cross-Configuration Comparison (Identical Held-Out Dataset)**")
         if comparison_df is not None:
-            st.dataframe(comparison_df, use_container_width=True, hide_index=True)
+            render_safe_table(comparison_df, use_container_width=True, hide_index=True)
             st.download_button(
                 "Download Baseline Comparison CSV",
                 data=comparison_df.to_csv(index=False).encode("utf-8-sig"),
@@ -244,7 +244,7 @@ def render_research_evaluation(get_verifier_fn) -> None:
         ablation_summary_path = Path("member_b/results/fair_numeric_ablation_summary.csv")
         if ablation_summary_path.exists():
             df_abl = pd.read_csv(ablation_summary_path)
-            st.dataframe(df_abl, use_container_width=True, hide_index=True)
+            render_safe_table(df_abl, use_container_width=True, hide_index=True)
         else:
             st.info("Run `member_b/run_fair_ablation.py` to generate the fair ablation summary.")
 
@@ -258,7 +258,7 @@ def render_research_evaluation(get_verifier_fn) -> None:
                     "config_a_status", "config_a_action",
                     "config_b_status", "config_b_action"
                 ]]
-                st.dataframe(df_cases, use_container_width=True, hide_index=True)
+                render_safe_table(df_cases, use_container_width=True, hide_index=True)
             except Exception as exc:
                 st.warning(f"Error loading controlled cases: {exc}")
         else:
@@ -320,7 +320,7 @@ def render_research_evaluation(get_verifier_fn) -> None:
                         "Relative Change": f"{(test_split_meta.get('ece_calibrated', 0.0) - test_split_meta.get('ece_uncalibrated', 1.0)) / max(1e-6, test_split_meta.get('ece_uncalibrated', 1.0)):+.1%}",
                     },
                 ])
-                st.dataframe(cal_metrics_df, use_container_width=True, hide_index=True)
+                render_safe_table(cal_metrics_df, use_container_width=True, hide_index=True)
                 st.caption(f"Fitted on calibration split ({cal_split.get('n_samples', 46)} premise-hypothesis pairs from 3 independent document domains). Generalization evaluated out-of-domain on {test_split_meta.get('n_samples', 150)} test pairs from 10 unseen document domains.")
             except Exception as exc:
                 st.warning(f"Error loading calibration artifact: {exc}")
@@ -330,7 +330,7 @@ def render_research_evaluation(get_verifier_fn) -> None:
     with tab5:
         st.markdown("**Prediction Audit Trail**")
         if predictions is not None:
-            st.dataframe(predictions, use_container_width=True, hide_index=True)
+            render_safe_table(predictions, use_container_width=True, hide_index=True)
             st.download_button(
                 "Download Benchmark Predictions CSV",
                 data=predictions.to_csv(index=False).encode("utf-8-sig"),

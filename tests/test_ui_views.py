@@ -9,6 +9,9 @@ from src.ui.components import (
     action_badge_html,
     format_citation,
     generate_audit_csv,
+    is_pyarrow_available,
+    render_safe_table,
+    _sanitize_csv_cell,
 )
 from src.ui.view_demo import SCENARIOS
 
@@ -106,4 +109,47 @@ def test_demo_centre_scenarios_exist():
         assert len(sc["question"].strip()) > 0
         assert len(sc["problematic_answer"].strip()) > 0
         assert "Synthetic Document" in sc["doc_label"]
+
+
+def test_is_pyarrow_available_and_environment_override(monkeypatch):
+    import src.ui.components as comps
+    # Test natural detection
+    comps._PYARROW_AVAILABLE = None
+    res = comps.is_pyarrow_available()
+    assert isinstance(res, bool)
+
+    # Test forced safe tables fallback via environment variable
+    comps._PYARROW_AVAILABLE = None
+    monkeypatch.setenv("FORCE_SAFE_TABLES", "1")
+    assert comps.is_pyarrow_available() is False
+
+    # Reset
+    comps._PYARROW_AVAILABLE = None
+
+
+def test_render_safe_table_resilience(monkeypatch):
+    import src.ui.components as comps
+    monkeypatch.setenv("FORCE_SAFE_TABLES", "1")
+    comps._PYARROW_AVAILABLE = False
+
+    df = pd.DataFrame({"Metric": ["Accuracy", "F1"], "Value": [0.892, 0.889]})
+    # Should execute HTML fallback cleanly without raising exceptions
+    comps.render_safe_table(df)
+    comps.render_safe_table(df.to_dict(orient="records"))
+    comps.render_safe_table(pd.DataFrame())
+    comps.render_safe_table(None)
+
+    # Reset
+    comps._PYARROW_AVAILABLE = None
+
+
+def test_csv_injection_formula_sanitization():
+    assert _sanitize_csv_cell("=1+1") == "'=1+1"
+    assert _sanitize_csv_cell("@SUM(A1:A10)") == "'@SUM(A1:A10)"
+    assert _sanitize_csv_cell("+cmd|'/c calc'!A0") == "'+cmd|'/c calc'!A0"
+    assert _sanitize_csv_cell("-50") == "'-50"
+    assert _sanitize_csv_cell("\tTab") == "'\tTab"
+    assert _sanitize_csv_cell("Normal text") == "Normal text"
+    assert _sanitize_csv_cell(12345) == 12345
+
 

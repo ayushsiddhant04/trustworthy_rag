@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import html
+import os
 import pandas as pd
 import streamlit as st
 
@@ -90,4 +91,89 @@ def generate_audit_csv(results: list[dict]) -> bytes:
             "evidence_pages": _sanitize_csv_cell(pages),
         })
     return pd.DataFrame(rows).to_csv(index=False).encode("utf-8-sig")
+
+
+_PYARROW_AVAILABLE: bool | None = None
+
+
+def is_pyarrow_available() -> bool:
+    """Check whether PyArrow native C extension can be imported without Windows App Control blocks."""
+    global _PYARROW_AVAILABLE
+    if _PYARROW_AVAILABLE is None:
+        if os.environ.get("FORCE_SAFE_TABLES", "0").lower() in ("1", "true", "yes"):
+            _PYARROW_AVAILABLE = False
+            return False
+        try:
+            import pyarrow as pa
+            import pyarrow.lib  # Force native C-extension load
+            _ = pa.Table.from_pandas(pd.DataFrame({"_c": [1]}))
+            _PYARROW_AVAILABLE = True
+        except BaseException:
+            _PYARROW_AVAILABLE = False
+    return _PYARROW_AVAILABLE
+
+
+def render_safe_table(
+    data: object,
+    use_container_width: bool = True,
+    hide_index: bool = True,
+    max_rows: int = 100,
+) -> None:
+    """Render a table via native st.dataframe if PyArrow is functional, or safe HTML table if PyArrow is blocked."""
+    if is_pyarrow_available():
+        try:
+            st.dataframe(data, use_container_width=use_container_width, hide_index=hide_index)
+            return
+        except BaseException:
+            pass  # Fall through to HTML table fallback
+
+    if data is None:
+        return
+
+    # Extract clean DataFrame
+    if hasattr(data, "data") and isinstance(data.data, pd.DataFrame):
+        df = data.data.copy()
+    elif isinstance(data, pd.DataFrame):
+        df = data.copy()
+    elif isinstance(data, (list, tuple, dict)):
+        df = pd.DataFrame(data)
+    else:
+        try:
+            df = pd.DataFrame(data)
+        except Exception:
+            st.write(data)
+            return
+
+    if df.empty:
+        st.caption("No tabular records to display.")
+        return
+
+    total_rows = len(df)
+    if total_rows > max_rows:
+        display_df = df.head(max_rows).copy()
+        row_note = f"<div style='font-size:0.75rem; color:#64748b; padding:0.4rem 0.6rem; border-top:1px solid #f1f5f9; background-color:#f8fafc;'>Showing first {max_rows} of {total_rows} records.</div>"
+    else:
+        display_df = df.copy()
+        row_note = ""
+
+    # Format numeric floats for clean visual presentation
+    for col in display_df.select_dtypes(include=["float", "float64", "float32"]).columns:
+        display_df[col] = display_df[col].apply(lambda v: f"{v:.3f}" if pd.notnull(v) and isinstance(v, (int, float)) else v)
+
+    html_table = display_df.to_html(
+        index=not hide_index,
+        escape=True,
+        classes="er-table",
+        border=0,
+    )
+
+    st.markdown(
+        f"""
+        <div class="er-table-container">
+          {html_table}
+          {row_note}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 

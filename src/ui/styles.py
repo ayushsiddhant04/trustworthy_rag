@@ -206,6 +206,54 @@ CUSTOM_CSS = """
     border: 1px solid #e2e8f0 !important;
   }
 
+  /* Resilient Table Styling (Safe Fallback for PyArrow-restricted environments) */
+  .er-table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin: 0.6rem 0 1.25rem 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  }
+  .er-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+    color: #1e293b;
+    text-align: left;
+    white-space: normal;
+    font-family: inherit;
+  }
+  .er-table th {
+    background-color: #f8fafc;
+    color: #334155;
+    font-weight: 600;
+    padding: 0.6rem 0.85rem;
+    border-bottom: 2px solid #e2e8f0;
+    border-right: 1px solid #f1f5f9;
+    text-align: left;
+  }
+  .er-table th:last-child {
+    border-right: none;
+  }
+  .er-table td {
+    padding: 0.55rem 0.85rem;
+    border-bottom: 1px solid #f1f5f9;
+    border-right: 1px solid #f8fafc;
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  .er-table td:last-child {
+    border-right: none;
+  }
+  .er-table tr:hover td {
+    background-color: #f8fafc;
+  }
+  .er-table tr:last-child td {
+    border-bottom: none;
+  }
+
   /* Empty state box */
   .er-empty-state {
     text-align: center;

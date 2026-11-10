@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import streamlit as st
-from .components import render_page_header
+from .components import render_page_header, render_safe_table
 
 
 def render_methodology() -> None:
@@ -97,7 +97,7 @@ def render_methodology() -> None:
                 "User-Facing Treatment": "Withheld from final text due to lack of ground truth evidence.",
             },
         ]
-        st.dataframe(matrix_data, use_container_width=True, hide_index=True)
+        render_safe_table(matrix_data, use_container_width=True, hide_index=True)
 
         st.markdown("#### Numerical & Date Precedence Rule")
         st.markdown(
