@@ -246,3 +246,8 @@ Verify all key functions in the deployed Space:
 ### Issue 5: Uploaded Document Privacy
 - **Policy**: Uploaded documents are processed entirely in-memory within the Streamlit session state and are never persisted to public disk volumes or transmitted to third-party endpoints unless external LLM mode is explicitly configured with user-provided API credentials. Resetting the session or uploading a new file automatically flushes previous document buffers.
 
+### Issue 6: CORS & Cross-Origin WebSocket Policy
+- **Standard Configuration**: `.streamlit/config.toml` configures `enableCORS = true` and `enableXsrfProtection = true` for local development and containerized deployments.
+- **Cross-Origin Iframe Embedding**: If deploying inside an embedded cross-origin iframe where the hosting platform proxies WebSocket traffic from a distinct origin, configure allowed origins explicitly via `server.corsAllowedOrigins = ["https://huggingface.co"]` rather than disabling CORS globally. Never disable XSRF protection (`enableXsrfProtection = true`), which safeguards file upload endpoints against cross-site request forgery.
+
+

@@ -108,7 +108,7 @@ def is_pyarrow_available() -> bool:
             import pyarrow.lib  # Force native C-extension load
             _ = pa.Table.from_pandas(pd.DataFrame({"_c": [1]}))
             _PYARROW_AVAILABLE = True
-        except BaseException:
+        except Exception:
             _PYARROW_AVAILABLE = False
     return _PYARROW_AVAILABLE
 
@@ -124,7 +124,7 @@ def render_safe_table(
         try:
             st.dataframe(data, use_container_width=use_container_width, hide_index=hide_index)
             return
-        except BaseException:
+        except Exception:
             pass  # Fall through to HTML table fallback
 
     if data is None:
