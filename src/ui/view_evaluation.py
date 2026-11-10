@@ -339,6 +339,4 @@ def render_research_evaluation(get_verifier_fn) -> None:
             )
         else:
             st.info("Run a benchmark evaluation to generate row-by-row prediction records.")
-        else:
-            st.info("Run a benchmark evaluation to generate row-by-row prediction records.")
 
