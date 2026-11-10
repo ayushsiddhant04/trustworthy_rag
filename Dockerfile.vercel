@@ -42,10 +42,16 @@ USER user
 # Copy dependency definition
 COPY --chown=user:user requirements.txt $HOME/app/
 
-# Install PyTorch CPU and pinned production dependencies in user space
+# Step 1: Install CPU-only PyTorch directly from official PyTorch CPU index
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu && \
-    pip install --no-cache-dir -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+    pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+
+# Step 2: Install remaining production requirements from PyPI without relying on index priority
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Step 3: Validate PyTorch installation: verify CPU-only build (CUDA is None) and run pip check
+RUN python -c "import torch; print(f'Verified PyTorch: {torch.__version__}'); assert torch.version.cuda is None, f'Expected CPU build, found CUDA: {torch.version.cuda}'" && \
+    pip check
 
 # Pre-download both models directly into user-owned HF_HOME during build
 # Eliminates cold-start latency and avoids outbound runtime Hugging Face Hub calls
