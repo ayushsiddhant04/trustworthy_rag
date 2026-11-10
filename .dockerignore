@@ -21,4 +21,5 @@ docs/screenshots/
 .coverage
 htmlcov/
 *.bat
+*.zip
 

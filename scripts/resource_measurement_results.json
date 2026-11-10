@@ -1,0 +1,73 @@
+{
+  "platform": "win32",
+  "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "overall_peak_rss_mb": 981.8203125,
+  "vercel_limit_ram_mb": 2048.0,
+  "vercel_headroom_mb": 1066.1796875,
+  "vercel_timeout_limit_sec": 300.0,
+  "results": [
+    {
+      "phase": "1. Fresh Application Startup (Modules imported)",
+      "duration_sec": 2.1472268998622894,
+      "end_rss_mb": 150.61328125,
+      "peak_rss_mb": 150.61328125,
+      "delta_mb": 150.61328125
+    },
+    {
+      "phase": "2. MiniLM-L6-v2 Model Loading",
+      "duration_sec": 20.048336300067604,
+      "end_rss_mb": 422.6328125,
+      "peak_rss_mb": 422.6328125,
+      "delta_mb": 272.01953125
+    },
+    {
+      "phase": "3. DeBERTa-v3-base Verification Engine Loading",
+      "duration_sec": 1.271516100037843,
+      "end_rss_mb": 599.046875,
+      "peak_rss_mb": 599.02734375,
+      "delta_mb": 176.4140625
+    },
+    {
+      "phase": "4. Both Models Resident in Memory",
+      "duration_sec": 0.0,
+      "end_rss_mb": 599.046875,
+      "peak_rss_mb": 599.02734375,
+      "delta_mb": 448.43359375
+    },
+    {
+      "phase": "5. Demo Scenario 1 (Contradiction/Withhold)",
+      "duration_sec": 0.9947238001041114,
+      "end_rss_mb": 962.2890625,
+      "peak_rss_mb": 962.2890625,
+      "delta_mb": 363.2421875
+    },
+    {
+      "phase": "6. Demo Scenario 2 (Insufficient/Withhold)",
+      "duration_sec": 0.4787709000520408,
+      "end_rss_mb": 980.2578125,
+      "peak_rss_mb": 980.26171875,
+      "delta_mb": 381.21484375
+    },
+    {
+      "phase": "7. Demo Scenario 3 (Conflicting/Caveat)",
+      "duration_sec": 0.43939319998025894,
+      "end_rss_mb": 980.6640625,
+      "peak_rss_mb": 980.66796875,
+      "delta_mb": 381.62109375
+    },
+    {
+      "phase": "8. Full Document Review Ingestion & Verification",
+      "duration_sec": 1.4854048998095095,
+      "end_rss_mb": 980.953125,
+      "peak_rss_mb": 980.95703125,
+      "delta_mb": 381.91015625
+    },
+    {
+      "phase": "9. Representative Benchmark Batch (10 claims)",
+      "duration_sec": 2.207440899685025,
+      "end_rss_mb": 963.625,
+      "peak_rss_mb": 981.8203125,
+      "delta_mb": 382.7734375
+    }
+  ]
+}

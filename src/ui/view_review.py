@@ -37,6 +37,10 @@ def render_document_review(get_verifier_fn) -> None:
             type=["pdf", "txt", "docx"],
             help=f"Text-based documents up to {max_upload_mb_str} MB. Scanned image PDFs without text layers will be reported clearly.",
         )
+        st.caption(
+            "🔒 **In-Memory Session Privacy**: Uploaded documents and verification states are processed in memory and never written to permanent disk. "
+            "Reconnecting after an idle timeout or container restart may require re-uploading your document."
+        )
 
         oversized = False
         current_sig = f"{uploaded.name}_{uploaded.size}" if uploaded else None
