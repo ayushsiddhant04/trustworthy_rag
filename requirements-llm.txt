@@ -1,0 +1,3 @@
+-r requirements.txt
+# Optional external LLM; external calls remain disabled unless enabled in .env
+anthropic>=0.20

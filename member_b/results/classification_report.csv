@@ -1,0 +1,8 @@
+,precision,recall,f1-score,support
+supported,1.0,1.0,1.0,2.0
+contradicted,1.0,1.0,1.0,2.0
+insufficient,1.0,1.0,1.0,2.0
+conflicting,0.0,0.0,0.0,0.0
+accuracy,1.0,1.0,1.0,1.0
+macro avg,0.75,0.75,0.75,6.0
+weighted avg,1.0,1.0,1.0,6.0

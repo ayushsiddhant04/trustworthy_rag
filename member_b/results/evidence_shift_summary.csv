@@ -1,0 +1,6 @@
+condition,examples,accuracy,macro_f1
+clean,6,1.0,1.0
+irrelevant,6,0.667,0.267
+incomplete,6,0.667,0.267
+contradictory,6,1.0,0.333
+noisy,6,1.0,1.0

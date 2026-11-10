@@ -1,0 +1,14 @@
+example_id,claim,evidence,true_label
+cal_01,The Earth revolves around the Sun.,The Earth orbits the Sun once every 365.25 days.,supported
+cal_02,Water boils at 50 degrees Celsius at sea level.,Water boils at 100 degrees Celsius under standard atmospheric pressure.,contradicted
+cal_03,The conference registration fee is 150 dollars.,The conference will be held at the city convention center.,insufficient
+cal_04,Python 3.12 was released in October 2023.,Python version 3.12 was officially released in October 2023.,supported
+cal_05,The library is open 24 hours daily.,The library operates Monday through Friday from 8 AM to 8 PM.,contradicted
+cal_06,The committee published its annual financial statement.,The committee met in August to discuss upcoming cultural events.,insufficient
+cal_07,Mount Everest is the highest mountain above sea level.,Mount Everest has an elevation of 8848.86 metres above sea level.,supported
+cal_08,The speed of light is 3000 kilometers per hour.,The speed of light in vacuum is approximately 299792 kilometers per second.,contradicted
+cal_09,The university offers master degrees in artificial intelligence.,The university campus encompasses over 200 acres of green space.,insufficient
+cal_10,Antibiotics are effective against bacterial infections.,Antibiotics kill or inhibit the growth of bacteria.,supported
+cal_11,The train departs at 09:30 AM.,The departure board indicates the train leaves at 11:15 AM.,contradicted
+cal_12,The company expanded into renewable solar power.,The corporate headquarters relocated to an energy efficient facility.,insufficient
+

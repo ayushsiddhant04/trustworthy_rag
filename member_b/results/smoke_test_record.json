@@ -1,0 +1,56 @@
+{
+  "model_name": "cross-encoder/nli-deberta-v3-base",
+  "model_loaded": true,
+  "load_latency_sec": 0.4871,
+  "label_ids": {
+    "contradiction": 0,
+    "entailment": 1,
+    "neutral": 2
+  },
+  "is_calibrated": false,
+  "temperature": 1.0,
+  "supported_example": {
+    "claim": "Water freezes at 0 degrees Celsius.",
+    "evidence": "Pure water freezes at 0 degrees Celsius under standard atmospheric pressure.",
+    "predicted_status": "supported",
+    "action": "state",
+    "confidence": 0.9973140760960494,
+    "reason": "The retrieved evidence supports this claim.",
+    "passage_scores": [
+      {
+        "chunk_id": "support_chunk",
+        "page": null,
+        "source": null,
+        "text": "Pure water freezes at 0 degrees Celsius under standard atmospheric pressure.",
+        "max_entailment": 0.9973140760960494,
+        "max_contradiction": 0.00010936566717113725,
+        "max_neutral": 0.0025765582367794945,
+        "best_entailment_window": "Pure water freezes at 0 degrees Celsius under standard atmospheric pressure.",
+        "best_contradiction_window": "Pure water freezes at 0 degrees Celsius under standard atmospheric pressure."
+      }
+    ],
+    "latency_ms": 368.69
+  },
+  "contradicted_example": {
+    "claim": "The library opens at 06:00 AM.",
+    "evidence": "The library operates strictly between 09:00 AM and 05:00 PM on weekdays.",
+    "predicted_status": "contradicted",
+    "action": "withhold",
+    "confidence": 0.9968220727344733,
+    "reason": "The retrieved evidence contradicts this claim.",
+    "passage_scores": [
+      {
+        "chunk_id": "contra_chunk",
+        "page": null,
+        "source": null,
+        "text": "The library operates strictly between 09:00 AM and 05:00 PM on weekdays.",
+        "max_entailment": 0.0008584208455344755,
+        "max_contradiction": 0.9968220727344733,
+        "max_neutral": 0.002319506419992103,
+        "best_entailment_window": "The library operates strictly between 09:00 AM and 05:00 PM on weekdays.",
+        "best_contradiction_window": "The library operates strictly between 09:00 AM and 05:00 PM on weekdays."
+      }
+    ],
+    "latency_ms": 86.89
+  }
+}

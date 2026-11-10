@@ -1,0 +1,31 @@
+claim,condition,true_label,predicted_label,action,confidence
+Bengaluru is the capital of Karnataka.,clean,supported,supported,state,0.9965079571432304
+Bengaluru is the capital of Karnataka.,irrelevant,insufficient,insufficient,withhold,0.9967171481272784
+Bengaluru is the capital of Karnataka.,incomplete,insufficient,insufficient,withhold,0.9981903294175555
+Bengaluru is the capital of Karnataka.,contradictory,contradicted,contradicted,withhold,0.9992959250899652
+Bengaluru is the capital of Karnataka.,noisy,supported,supported,state,0.9974576117772673
+Mysuru is the capital of Karnataka.,clean,contradicted,contradicted,withhold,0.9987682488617365
+Mysuru is the capital of Karnataka.,irrelevant,insufficient,insufficient,withhold,0.9959980151427767
+Mysuru is the capital of Karnataka.,incomplete,insufficient,insufficient,withhold,0.9936990508375034
+Mysuru is the capital of Karnataka.,contradictory,contradicted,contradicted,withhold,0.9987682488617365
+Mysuru is the capital of Karnataka.,noisy,contradicted,contradicted,withhold,0.9985068804511756
+The university has 18 departments.,clean,insufficient,insufficient,withhold,0.9992939957902574
+The university has 18 departments.,irrelevant,insufficient,insufficient,withhold,0.9968330106005581
+The university has 18 departments.,incomplete,insufficient,insufficient,withhold,0.998997425296277
+The university has 18 departments.,contradictory,contradicted,contradicted,withhold,0.9998359914863678
+The university has 18 departments.,noisy,insufficient,insufficient,withhold,0.9994219830247886
+Water freezes at 0 degrees Celsius.,clean,supported,supported,state,0.9972210431572607
+Water freezes at 0 degrees Celsius.,irrelevant,insufficient,contradicted,withhold,0.9987844920722222
+Water freezes at 0 degrees Celsius.,incomplete,insufficient,supported,state,0.9936560630617051
+Water freezes at 0 degrees Celsius.,contradictory,contradicted,contradicted,withhold,0.9992002518783992
+Water freezes at 0 degrees Celsius.,noisy,supported,supported,state,0.997370591501214
+"The notice says the fee is ₹8,000.",clean,contradicted,contradicted,withhold,0.9998105287906621
+"The notice says the fee is ₹8,000.",irrelevant,insufficient,contradicted,withhold,0.9928795392947393
+"The notice says the fee is ₹8,000.",incomplete,insufficient,insufficient,withhold,0.9994276319247362
+"The notice says the fee is ₹8,000.",contradictory,contradicted,contradicted,withhold,0.9997889252202399
+"The notice says the fee is ₹8,000.",noisy,contradicted,contradicted,withhold,0.9995897636183869
+The library opens at 8 AM.,clean,insufficient,insufficient,withhold,0.9992527504240479
+The library opens at 8 AM.,irrelevant,insufficient,insufficient,withhold,0.9975918604140479
+The library opens at 8 AM.,incomplete,insufficient,supported,state,0.959173651263294
+The library opens at 8 AM.,contradictory,contradicted,contradicted,withhold,0.9997430349492771
+The library opens at 8 AM.,noisy,insufficient,insufficient,withhold,0.9985909263903388

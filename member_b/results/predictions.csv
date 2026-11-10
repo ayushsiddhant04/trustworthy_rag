@@ -1,0 +1,7 @@
+claim,evidence,true_label,predicted_label,action,confidence,reason
+Bengaluru is the capital of Karnataka.,Bengaluru is the capital of Karnataka.,supported,supported,state,0.9965079571432304,The retrieved evidence supports this claim.
+Mysuru is the capital of Karnataka.,Bengaluru is the capital of Karnataka.,contradicted,contradicted,withhold,0.9987682488617365,The retrieved evidence contradicts this claim.
+The university has 18 departments.,The document describes the university's admission process.,insufficient,insufficient,withhold,0.9992939957902574,The retrieved evidence does not establish this claim.
+Water freezes at 0 degrees Celsius.,Pure water freezes at 0 degrees Celsius under standard conditions.,supported,supported,state,0.9972210431572607,The retrieved evidence supports this claim.
+"The notice says the fee is ₹8,000.","The notice states that the fee is ₹5,000.",contradicted,contradicted,withhold,0.9998105287906621,"Possible fee mismatch: claim says ₹8,000; evidence says ₹5,000."
+The library opens at 8 AM.,"The passage discusses examination rules, not library timings.",insufficient,insufficient,withhold,0.9992527504240479,The retrieved evidence does not establish this claim.

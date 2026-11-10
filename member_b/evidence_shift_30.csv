@@ -1,0 +1,31 @@
+claim,evidence,condition,true_label
+Bengaluru is the capital of Karnataka.,Bengaluru is the capital of Karnataka.,clean,supported
+Bengaluru is the capital of Karnataka.,The university cafeteria serves lunch between noon and 2 PM.,irrelevant,insufficient
+Bengaluru is the capital of Karnataka.,Bengaluru is a major city in southern India.,incomplete,insufficient
+Bengaluru is the capital of Karnataka.,Mysuru is the capital of Karnataka.,contradictory,contradicted
+Bengaluru is the capital of Karnataka.,Bengaluru is the capital of Karnataka. The passage also contains unrelated administrative details.,noisy,supported
+Mysuru is the capital of Karnataka.,Bengaluru is the capital of Karnataka.,clean,contradicted
+Mysuru is the capital of Karnataka.,Karnataka has several public universities and colleges.,irrelevant,insufficient
+Mysuru is the capital of Karnataka.,Mysuru is a historic city in Karnataka.,incomplete,insufficient
+Mysuru is the capital of Karnataka.,Bengaluru is the capital of Karnataka.,contradictory,contradicted
+Mysuru is the capital of Karnataka.,Bengaluru is the capital of Karnataka. The passage also contains unrelated administrative details.,noisy,contradicted
+The university has 18 departments.,The document describes the university's admission process.,clean,insufficient
+The university has 18 departments.,The university library provides books and digital resources.,irrelevant,insufficient
+The university has 18 departments.,The university offers undergraduate and postgraduate programmes.,incomplete,insufficient
+The university has 18 departments.,The university has 12 departments.,contradictory,contradicted
+The university has 18 departments.,The document describes the university's admission process. The passage also contains unrelated administrative details.,noisy,insufficient
+Water freezes at 0 degrees Celsius.,Pure water freezes at 0 degrees Celsius under standard conditions.,clean,supported
+Water freezes at 0 degrees Celsius.,The city recorded heavy rainfall during the monsoon season.,irrelevant,insufficient
+Water freezes at 0 degrees Celsius.,"Water changes between solid, liquid and gaseous states.",incomplete,insufficient
+Water freezes at 0 degrees Celsius.,"Under the stated conditions, water freezes at 10 degrees Celsius.",contradictory,contradicted
+Water freezes at 0 degrees Celsius.,Pure water freezes at 0 degrees Celsius under standard conditions. The passage also contains unrelated administrative details.,noisy,supported
+"The notice says the fee is ₹8,000.","The notice states that the fee is ₹5,000.",clean,contradicted
+"The notice says the fee is ₹8,000.",The university campus has a library and a sports facility.,irrelevant,insufficient
+"The notice says the fee is ₹8,000.",The notice provides information about the fees payable by students.,incomplete,insufficient
+"The notice says the fee is ₹8,000.","The notice says the fee is ₹5,000.",contradictory,contradicted
+"The notice says the fee is ₹8,000.","The notice states that the fee is ₹5,000. The passage also contains unrelated administrative details.",noisy,contradicted
+The library opens at 8 AM.,"The passage discusses examination rules, not library timings.",clean,insufficient
+The library opens at 8 AM.,The examination department publishes semester results online.,irrelevant,insufficient
+The library opens at 8 AM.,"The library provides books, journals and study facilities.",incomplete,insufficient
+The library opens at 8 AM.,The library opens at 10 AM.,contradictory,contradicted
+The library opens at 8 AM.,"The passage discusses examination rules, not library timings. The passage also contains unrelated administrative details.",noisy,insufficient

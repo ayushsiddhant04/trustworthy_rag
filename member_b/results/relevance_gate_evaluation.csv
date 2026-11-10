@@ -1,0 +1,31 @@
+claim,condition,true_label,similarity,is_relevant
+Bengaluru is the capital of Karnataka.,clean,supported,1.0,True
+Bengaluru is the capital of Karnataka.,irrelevant,insufficient,0.07149876654148102,False
+Bengaluru is the capital of Karnataka.,incomplete,insufficient,0.7991527318954468,True
+Bengaluru is the capital of Karnataka.,contradictory,contradicted,0.6343827247619629,True
+Bengaluru is the capital of Karnataka.,noisy,supported,0.8775162696838379,True
+Mysuru is the capital of Karnataka.,clean,contradicted,0.6343827247619629,True
+Mysuru is the capital of Karnataka.,irrelevant,insufficient,0.594845175743103,True
+Mysuru is the capital of Karnataka.,incomplete,insufficient,0.921018123626709,True
+Mysuru is the capital of Karnataka.,contradictory,contradicted,0.6343827247619629,True
+Mysuru is the capital of Karnataka.,noisy,contradicted,0.5868387222290039,True
+The university has 18 departments.,clean,insufficient,0.4696160554885864,True
+The university has 18 departments.,irrelevant,insufficient,0.3074484169483185,True
+The university has 18 departments.,incomplete,insufficient,0.5633137822151184,True
+The university has 18 departments.,contradictory,contradicted,0.9160327911376953,True
+The university has 18 departments.,noisy,insufficient,0.45259496569633484,True
+Water freezes at 0 degrees Celsius.,clean,supported,0.9155661463737488,True
+Water freezes at 0 degrees Celsius.,irrelevant,insufficient,0.14242011308670044,False
+Water freezes at 0 degrees Celsius.,incomplete,insufficient,0.33850207924842834,True
+Water freezes at 0 degrees Celsius.,contradictory,contradicted,0.8462405204772949,True
+Water freezes at 0 degrees Celsius.,noisy,supported,0.8564019203186035,True
+"The notice says the fee is ₹8,000.",clean,contradicted,0.9200447201728821,True
+"The notice says the fee is ₹8,000.",irrelevant,insufficient,-0.09627848863601685,False
+"The notice says the fee is ₹8,000.",incomplete,insufficient,0.5363048315048218,True
+"The notice says the fee is ₹8,000.",contradictory,contradicted,0.9289341568946838,True
+"The notice says the fee is ₹8,000.",noisy,contradicted,0.8874521255493164,True
+The library opens at 8 AM.,clean,insufficient,0.4175645411014557,True
+The library opens at 8 AM.,irrelevant,insufficient,0.17674651741981506,False
+The library opens at 8 AM.,incomplete,insufficient,0.46261996030807495,True
+The library opens at 8 AM.,contradictory,contradicted,0.927390456199646,True
+The library opens at 8 AM.,noisy,insufficient,0.4747562110424042,True

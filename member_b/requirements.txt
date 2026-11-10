@@ -1,0 +1,9 @@
+sentence-transformers
+transformers
+torch
+scipy
+numpy
+pandas
+scikit-learn
+pytest
+python-dateutil

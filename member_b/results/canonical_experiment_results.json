@@ -1,0 +1,392 @@
+{
+  "baseline_1_raw_nli": {
+    "n_examples": 120,
+    "accuracy": 0.725,
+    "macro_f1": 0.6264204545454546,
+    "macro_precision": 0.5580882352941177,
+    "macro_recall": 0.725,
+    "per_class": {
+      "supported": {
+        "precision": 0.6,
+        "recall": 1.0,
+        "f1": 0.75,
+        "support": 30
+      },
+      "contradicted": {
+        "precision": 0.8823529411764706,
+        "recall": 1.0,
+        "f1": 0.9375,
+        "support": 30
+      },
+      "insufficient": {
+        "precision": 0.75,
+        "recall": 0.9,
+        "f1": 0.8181818181818182,
+        "support": 30
+      },
+      "conflicting": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 30
+      }
+    },
+    "confusion_matrix": [
+      [
+        30,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        30,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        27,
+        0
+      ],
+      [
+        20,
+        1,
+        9,
+        0
+      ]
+    ],
+    "labels": [
+      "supported",
+      "contradicted",
+      "insufficient",
+      "conflicting"
+    ],
+    "false_acceptance_rate": 0.2222222222222222,
+    "coverage": 0.4166666666666667,
+    "abstention_rate": 0.5833333333333334,
+    "accuracy_ci": [
+      0.708,
+      0.74
+    ],
+    "macro_f1_ci": [
+      0.608,
+      0.643
+    ],
+    "avg_latency_ms": 91.36502749946278,
+    "config_name": "Baseline 1: Raw NLI"
+  },
+  "baseline_2_aggregation": {
+    "n_examples": 120,
+    "accuracy": 0.8916666666666667,
+    "macro_f1": 0.8892230576441102,
+    "macro_precision": 0.9147727272727273,
+    "macro_recall": 0.8916666666666666,
+    "per_class": {
+      "supported": {
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571,
+        "support": 30
+      },
+      "contradicted": {
+        "precision": 0.9090909090909091,
+        "recall": 1.0,
+        "f1": 0.9523809523809523,
+        "support": 30
+      },
+      "insufficient": {
+        "precision": 1.0,
+        "recall": 0.9,
+        "f1": 0.9473684210526315,
+        "support": 30
+      },
+      "conflicting": {
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "f1": 0.8,
+        "support": 30
+      }
+    },
+    "confusion_matrix": [
+      [
+        30,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        30,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        27,
+        0
+      ],
+      [
+        10,
+        0,
+        0,
+        20
+      ]
+    ],
+    "labels": [
+      "supported",
+      "contradicted",
+      "insufficient",
+      "conflicting"
+    ],
+    "false_acceptance_rate": 0.1111111111111111,
+    "coverage": 0.5,
+    "abstention_rate": 0.5,
+    "accuracy_ci": [
+      0.875,
+      0.906
+    ],
+    "macro_f1_ci": [
+      0.869,
+      0.905
+    ],
+    "avg_latency_ms": 96.41929583934446,
+    "config_name": "Baseline 2: NLI + Aggregation (No Numeric Rules)"
+  },
+  "baseline_3_numeric": {
+    "n_examples": 120,
+    "accuracy": 0.725,
+    "macro_f1": 0.6264204545454546,
+    "macro_precision": 0.5580882352941177,
+    "macro_recall": 0.725,
+    "per_class": {
+      "supported": {
+        "precision": 0.6,
+        "recall": 1.0,
+        "f1": 0.75,
+        "support": 30
+      },
+      "contradicted": {
+        "precision": 0.8823529411764706,
+        "recall": 1.0,
+        "f1": 0.9375,
+        "support": 30
+      },
+      "insufficient": {
+        "precision": 0.75,
+        "recall": 0.9,
+        "f1": 0.8181818181818182,
+        "support": 30
+      },
+      "conflicting": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 30
+      }
+    },
+    "confusion_matrix": [
+      [
+        30,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        30,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        27,
+        0
+      ],
+      [
+        20,
+        1,
+        9,
+        0
+      ]
+    ],
+    "labels": [
+      "supported",
+      "contradicted",
+      "insufficient",
+      "conflicting"
+    ],
+    "false_acceptance_rate": 0.022222222222222223,
+    "coverage": 0.4166666666666667,
+    "abstention_rate": 0.5833333333333334,
+    "accuracy_ci": [
+      0.708,
+      0.74
+    ],
+    "macro_f1_ci": [
+      0.608,
+      0.643
+    ],
+    "avg_latency_ms": 91.2575408234261,
+    "config_name": "Baseline 3: NLI + Numeric Checks (No Aggregation)"
+  },
+  "baseline_4_ungated": {
+    "n_examples": 120,
+    "accuracy": 0.8916666666666667,
+    "macro_f1": 0.8892230576441102,
+    "macro_precision": 0.9147727272727273,
+    "macro_recall": 0.8916666666666666,
+    "per_class": {
+      "supported": {
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571,
+        "support": 30
+      },
+      "contradicted": {
+        "precision": 0.9090909090909091,
+        "recall": 1.0,
+        "f1": 0.9523809523809523,
+        "support": 30
+      },
+      "insufficient": {
+        "precision": 1.0,
+        "recall": 0.9,
+        "f1": 0.9473684210526315,
+        "support": 30
+      },
+      "conflicting": {
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "f1": 0.8,
+        "support": 30
+      }
+    },
+    "confusion_matrix": [
+      [
+        30,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        30,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        27,
+        0
+      ],
+      [
+        10,
+        0,
+        0,
+        20
+      ]
+    ],
+    "labels": [
+      "supported",
+      "contradicted",
+      "insufficient",
+      "conflicting"
+    ],
+    "false_acceptance_rate": 0.1111111111111111,
+    "coverage": 0.5,
+    "abstention_rate": 0.5,
+    "accuracy_ci": [
+      0.875,
+      0.906
+    ],
+    "macro_f1_ci": [
+      0.869,
+      0.905
+    ],
+    "avg_latency_ms": 97.73567334244338,
+    "config_name": "Baseline 4: Complete Verifier (Ungated)"
+  },
+  "proposed_gated": {
+    "n_examples": 120,
+    "accuracy": 0.875,
+    "macro_f1": 0.8682800973896326,
+    "macro_precision": 0.9123900293255132,
+    "macro_recall": 0.875,
+    "per_class": {
+      "supported": {
+        "precision": 0.6818181818181818,
+        "recall": 1.0,
+        "f1": 0.8108108108108109,
+        "support": 30
+      },
+      "contradicted": {
+        "precision": 0.967741935483871,
+        "recall": 1.0,
+        "f1": 0.9836065573770492,
+        "support": 30
+      },
+      "insufficient": {
+        "precision": 1.0,
+        "recall": 0.9666666666666667,
+        "f1": 0.9830508474576272,
+        "support": 30
+      },
+      "conflicting": {
+        "precision": 1.0,
+        "recall": 0.5333333333333333,
+        "f1": 0.6956521739130435,
+        "support": 30
+      }
+    },
+    "confusion_matrix": [
+      [
+        30,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        30,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        29,
+        0
+      ],
+      [
+        14,
+        0,
+        0,
+        16
+      ]
+    ],
+    "labels": [
+      "supported",
+      "contradicted",
+      "insufficient",
+      "conflicting"
+    ],
+    "false_acceptance_rate": 0.13333333333333333,
+    "coverage": 0.5,
+    "abstention_rate": 0.5,
+    "accuracy_ci": [
+      0.845,
+      0.905
+    ],
+    "macro_f1_ci": [
+      0.833,
+      0.901
+    ],
+    "avg_latency_ms": 106.65227665837544,
+    "config_name": "Proposed: Verifier + Relevance Gating"
+  }
+}

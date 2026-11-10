@@ -1,0 +1,2 @@
+# Backward compatibility alias - all verification packages are in requirements.txt
+-r requirements.txt

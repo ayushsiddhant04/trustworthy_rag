@@ -1,0 +1,23 @@
+[
+    {
+        "claim": "Bengaluru is the capital of Karnataka.",
+        "expected": "supported",
+        "predicted": "supported",
+        "action": "state",
+        "correct": true
+    },
+    {
+        "claim": "Mysuru is the capital of Karnataka.",
+        "expected": "contradicted",
+        "predicted": "contradicted",
+        "action": "withhold",
+        "correct": true
+    },
+    {
+        "claim": "The university has 18 departments.",
+        "expected": "insufficient",
+        "predicted": "insufficient",
+        "action": "withhold",
+        "correct": true
+    }
+]

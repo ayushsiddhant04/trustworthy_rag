@@ -1,0 +1,25 @@
+{
+    "dataset_size": 30,
+    "baseline": {
+        "correct": 28,
+        "accuracy": 0.9333333333333333,
+        "withhold": 26,
+        "state": 4,
+        "caveat": 0
+    },
+    "relevance_gated": {
+        "correct": 29,
+        "accuracy": 0.9666666666666667,
+        "withhold": 26,
+        "state": 4,
+        "caveat": 0
+    },
+    "relevance_threshold": 0.3,
+    "remaining_error": {
+        "condition": "incomplete",
+        "true_label": "insufficient",
+        "predicted_label": "contradicted",
+        "action": "withhold"
+    },
+    "data_note": "Preliminary results on 30 synthetic examples."
+}

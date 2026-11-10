@@ -1,0 +1,28 @@
+{
+  "temperature": 2.688752079254141,
+  "is_calibrated": true,
+  "metadata": {
+    "temperature": 2.688752079254141,
+    "is_calibrated": true,
+    "calibration_set": {
+      "n_samples": 46,
+      "n_claims": 36,
+      "ece_uncalibrated": 0.1333239664222386,
+      "ece_calibrated": 0.12442359795848437,
+      "brier_uncalibrated": 0.2686928847864203,
+      "brier_calibrated": 0.23746568027959872,
+      "nll_uncalibrated": 0.7925911785926856,
+      "nll_calibrated": 0.4455459718187647
+    },
+    "held_out_test_set": {
+      "n_samples": 150,
+      "n_claims": 120,
+      "ece_uncalibrated": 0.06797222051236318,
+      "ece_calibrated": 0.08103899556014396,
+      "brier_uncalibrated": 0.13675545864681746,
+      "brier_calibrated": 0.1389243986472681,
+      "nll_uncalibrated": 0.36233501737310736,
+      "nll_calibrated": 0.292724024711625
+    }
+  }
+}

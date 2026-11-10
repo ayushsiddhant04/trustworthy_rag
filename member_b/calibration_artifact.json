@@ -1,0 +1,15 @@
+{
+  "temperature": 3.6814653178400194,
+  "is_calibrated": true,
+  "metadata": {
+    "model_name": "cross-encoder/nli-deberta-v3-base",
+    "n_samples": 12,
+    "ece_uncalibrated": 0.16244249300543923,
+    "ece_calibrated": 0.25900953038642904,
+    "brier_uncalibrated": 0.3330546081466174,
+    "brier_calibrated": 0.3336998216918888,
+    "nll_uncalibrated": 1.436807367338916,
+    "nll_calibrated": 0.6273662080616366,
+    "fitted_at": "2026-11-10T09:54:05.702929+00:00"
+  }
+}

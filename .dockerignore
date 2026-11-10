@@ -1,0 +1,24 @@
+# Docker build ignore file
+.venv/
+env/
+venv/
+.git/
+.gitignore
+.dockerignore
+.artifacts/
+scratch/
+.pytest_cache/
+tests/
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+*.tmp
+.env
+.env.*
+.streamlit/secrets.toml
+docs/screenshots/
+.coverage
+htmlcov/
+*.bat
+

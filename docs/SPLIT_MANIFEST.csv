@@ -1,0 +1,5 @@
+﻿split_name,file_path,num_documents,total_claims,supported_claims,contradicted_claims,insufficient_claims,conflicting_claims,file_size_bytes,sha256_checksum
+calibration,member_b/data/calibration_split.csv,3,36,9,9,9,9,23042,0562933604997988feeaa8c1b083742110a6dad0cd89317acfb085449e28effb
+validation,member_b/data/validation_split.csv,2,24,6,6,6,6,13663,b0437a1334ec8e65abf4685c162cc9519eb699338255ed7e13b96217bae4da14
+test,member_b/data/test_split.csv,10,120,30,30,30,30,70465,f490f6b3d9de54aef842759c3bfcf0ccff17b07474a70989c0839ebf212c00f2
+canonical_full,member_b/data/canonical_dataset_full.csv,15,180,45,45,45,45,106908,198a676f2a1c0586690db6397e0bddf4b28170fde7dd335f027a5fe765002cde
